@@ -1,0 +1,180 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>Flowers for Dee</title>
+<script language="JavaScript">
+var idBody;
+var idCanvasFrame;
+var idCanvas;
+var ctxCanvas;
+var widthCanvas = 1000;
+var heightCanvas = 1000;
+function Clamp(n_input, n_min, n_max) {
+	if(n_input < n_min) {
+		return n_min;
+	} else if(n_input > n_max) {
+		return n_max;
+	}
+	return n_input;
+}
+function calcSize() {
+	var w = window,
+		d = document,
+		e = d.documentElement,
+		g = d.getElementsByTagName('body')[0],
+		x = w.innerWidth || e.clientWidth || g.clientWidth,
+		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+	widthCanvas = Clamp(x, 0, 1000);
+	heightCanvas = Clamp(y, 0, 1000);
+}
+var rainbow = [];
+var rainbowSize = 12;
+function calcRainbow(numOfSteps, step) {
+    // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
+    // Adam Cole, 2011-Sept-14
+    // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+    var r, g, b;
+    var h = step / numOfSteps;
+    var i = ~~(h * 6);
+    var f = h * 6 - i;
+    var q = 1 - f;
+    switch(i % 6){
+        case 0: r = 1; g = f; b = 0; break;
+        case 1: r = q; g = 1; b = 0; break;
+        case 2: r = 0; g = 1; b = f; break;
+        case 3: r = 0; g = q; b = 1; break;
+        case 4: r = f; g = 0; b = 1; break;
+        case 5: r = 1; g = 0; b = q; break;
+    }
+    var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
+    return (c);
+}
+function createPageElements() {
+	calcSize();
+	for(var i = 0; i < rainbowSize; ++i) {
+		rainbow.push(calcRainbow(rainbowSize, i));
+	}
+	idBody = document.body;
+	idCanvasFrame = document.createElement("div");
+	idCanvasFrame.style = "width: 90%; height: 90%";
+	idBody.appendChild(idCanvasFrame);
+	idCanvas = document.createElement("canvas");
+	idCanvas.width =  widthCanvas;
+	idCanvas.height = heightCanvas;
+	idCanvas.onclick = handleCanvasClick;
+	idCanvasFrame.appendChild(idCanvas);
+	ctxCanvas = idCanvas.getContext("2d");
+}
+var gradSky;
+function createSky() {
+	gradSky = ctxCanvas.createLinearGradient(widthCanvas/2 + 125, 0, widthCanvas/2 - 125, heightCanvas);
+	gradSky.addColorStop(0, "#025ef2");
+	gradSky.addColorStop(1, "#011e46");
+}
+function drawSky() {
+	ctxCanvas.fillStyle = gradSky;
+	ctxCanvas.beginPath();
+	ctxCanvas.rect(0, 0, widthCanvas, heightCanvas);
+	ctxCanvas.fill();
+}
+var ground = [];
+var colorGround = "#874c05";
+function createGround() {
+	ground[0] = 250;
+	for(var i = 1; i < widthCanvas; ++i) {
+		ground[i] = Clamp(ground[i - 1] + (Math.random() - 0.5) * 3, 40, 200);
+	}
+}
+function drawGround() {
+	ctxCanvas.strokeStyle = colorGround;
+	for(var i = 1; i < widthCanvas; ++i) {
+		ctxCanvas.beginPath();
+		ctxCanvas.moveTo(i, heightCanvas);
+		ctxCanvas.lineTo(i, heightCanvas - ground[i]);
+		ctxCanvas.stroke();
+	}
+}
+var flowers = [];
+var heightFlowerSpawnGap = 100;
+var idxFlowerColor = 0;
+function addFlower(unsafe_x, unsafe_y) {
+	var x = Clamp(unsafe_x, 0, widthCanvas);
+	var y = Clamp(unsafe_y, 0, heightCanvas);
+	var flower = [];
+	flower.x = x;
+	flower.y = Clamp(y, 0, heightCanvas - ground[x] - heightFlowerSpawnGap);
+	flower.color = idxFlowerColor;
+	idxFlowerColor = idxFlowerColor + 1;
+	if(idxFlowerColor > rainbow.length) {
+		idxFlowerColor = 0;
+	}
+	flowers.push(flower);
+}
+function createSprites() {
+	addFlower(widthCanvas/2, heightCanvas/4);
+}
+var speedFlowerFall = 6;
+function moveFlowers() {
+	for(var i = 0; i < flowers.length; ++i) {
+		if(flowers[i].y < heightCanvas - ground[flowers[i].x]) {
+			flowers[i].y = flowers[i].y + speedFlowerFall;
+		}
+	}
+}
+var colorStem = "green";
+function drawFlower(x, y, idxFlowerColor) {
+	var scaleFlower = 25;
+	
+	ctxCanvas.strokeStyle = colorStem;
+	ctxCanvas.beginPath();
+	ctxCanvas.moveTo(x, y);
+	var stemX = x - scaleFlower / 3;
+	var stemY = y + scaleFlower * 2;
+	ctxCanvas.arcTo(stemX - 15, stemY - 30, stemX + 15, stemY + 30, scaleFlower * 4 / 3);
+	ctxCanvas.stroke();
+	
+	ctxCanvas.strokeStyle = rainbow[idxFlowerColor];
+	var twoPI = Math.PI * 8.0;
+	var segments = 73;
+	var epsilon = twoPI / segments;
+	ctxCanvas.beginPath();
+	for(var n = 0; n <= twoPI; n += epsilon) {
+		var radiusRose = Math.cos(0.75 * n);
+		var radiusX = radiusRose * Math.cos(n) * scaleFlower;
+		var radiusY = radiusRose * Math.sin(n) * scaleFlower;
+		if(n == 0) {
+			ctxCanvas.moveTo(x + radiusX, y + radiusY);
+		} else {
+			ctxCanvas.lineTo(x + radiusX, y + radiusY);
+		}
+		ctxCanvas.stroke();
+	}
+}
+function drawFlowers() {
+	for(var i = 0; i < flowers.length; ++i) {
+		drawFlower(flowers[i].x, flowers[i].y, flowers[i].color);
+	}
+}
+function drawSprites() {
+	drawFlowers();
+}
+function handleUpdate() {
+	moveFlowers();
+	drawSky();
+	drawGround();
+	drawSprites();
+}
+function handleBodyLoaded() {
+	createPageElements();
+	createSky();
+	createGround();
+	createSprites();
+	setInterval(handleUpdate, 33);
+}
+function handleCanvasClick(event) {
+	addFlower(event.clientX, event.clientY);
+}
+</script>
+</head>
+<body onload="handleBodyLoaded()">
+</body>
+</html>
