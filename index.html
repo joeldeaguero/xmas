@@ -145,18 +145,18 @@ function drawFlower(x, y, idxFlower) {
 		ctxCanvas.moveTo(x, y);
 		ctxCanvas.lineTo(x1, y1);
 		ctxCanvas.stroke();
-		for(var j = 0; j < flowers[idx].spikes; j++) {
-			var x2 = lerp(x0, x1, flowers[idx].spikeLerps[j]);
-			var y2 = lerp(y0, y1, flowers[idx].spikeLerps[j]);
+		for(var j = 0; j < flowers[idxFlower].spikes; j++) {
+			var x2 = lerp(x0, x1, flowers[idxFlower].spikeLerps[j]);
+			var y2 = lerp(y0, y1, flowers[idxFlower].spikeLerps[j]);
 			var leftAngle = baseAngle + Math.PI / 3;
 			var rightAngle = baseAngle - Math.PI / 3;
-			var x3 = x2 + flowers[idx].spikeLengths[j] * Math.cos(leftAngle);
-			var y3 = y2 + flowers[idx].spikeLengths[j] * Math.sin(leftAngle);
+			var x3 = x2 + flowers[idxFlower].spikeLengths[j] * Math.cos(leftAngle);
+			var y3 = y2 + flowers[idxFlower].spikeLengths[j] * Math.sin(leftAngle);
 			ctxCanvas.moveTo(x2, y2);
 			ctxCanvas.lineTo(x3, y3);
 			ctxCanvas.stroke();
-			var x4 = x2 + flowers[idx].spikeLengths[j] * Math.cos(rightAngle);
-			var y4 = x2 + flowers[idx].spikeLengths[j] * Math.sin(rightAngle);
+			var x4 = x2 + flowers[idxFlower].spikeLengths[j] * Math.cos(rightAngle);
+			var y4 = x2 + flowers[idxFlower].spikeLengths[j] * Math.sin(rightAngle);
 			ctxCanvas.moveTo(x2, y2);
 			ctxCanvas.lineTo(x4, y4);
 			ctxCanvas.stroke();
