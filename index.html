@@ -202,6 +202,16 @@ function drawSprites() {
 	drawFlowers();
 }
 function addRandomSnowflake() {
+	var num = 0;
+	for(var i = 0; i < flowers.length; ++i) {
+		if(typeof flowers[i] === 'undefined') {
+		} else {
+			num = num + 1;
+		}
+	}
+	if (num > 10) {
+		return;
+	}
 	var dice = Math.floor(Math.random() * 100) + 1
 	if (dice > 35) {
 		return
