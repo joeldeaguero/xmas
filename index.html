@@ -132,7 +132,7 @@ function moveFlowers() {
 		if(flowers[i].y < heightCanvas - ground[flowers[i].x]) {
 			flowers[i].y = flowers[i].y + speedFlowerFall;
 		} else {
-			flowers.Splice(i, 1);
+			flowers.splice(i, 1);
 		}
 	}
 }
