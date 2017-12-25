@@ -182,7 +182,7 @@ function old_drawFlower(x, y, idxFlowerColor) {
 }
 function drawFlowers() {
 	for(var i = 0; i < flowers.length; ++i) {
-		drawFlower(flowers[i].x, flowers[i].y, flowers[i].color);
+		drawFlower(flowers[i].x, flowers[i].y, i);
 	}
 }
 function drawSprites() {
