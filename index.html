@@ -112,7 +112,7 @@ function addFlower(unsafe_x, unsafe_y) {
 	flower.spikeLerps = [];
 	flower.spikeLengths = [];
 	flower.angle = Math.random() * Math.PI;
-	flower.angleVelocity = Math.random() * 0.02;
+	flower.angleVelocity = Math.random() * 0.1;
 	for(var i = 0; i < flower.spikes; i++) {
 		flower.spikeLerps[i] = Math.random();
 		flower.spikeLengths[i] = Math.floor(Math.random() * 10) + 2
