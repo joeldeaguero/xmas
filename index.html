@@ -149,11 +149,18 @@ function drawFlowers() {
 function drawSprites() {
 	drawFlowers();
 }
+function addRandomSnowflake() {
+	var width = screen.width;
+	var height = screen.height;
+	alert(width);
+	alert(height);
+}
 function handleUpdate() {
 	moveFlowers();
 	drawSky();
 	drawGround();
 	drawSprites();
+	addRandomSnowflake();
 }
 function handleBodyLoaded() {
 	createPageElements();
