@@ -152,8 +152,9 @@ function drawSprites() {
 function addRandomSnowflake() {
 	var width = screen.width;
 	var height = screen.height;
-	alert(width);
-	alert(height);
+	var x = Math.floor(Math.random() * width) + 1
+	var y = Math.floor(Math.random() * height) + 1
+	addFlower(x, y)
 }
 function handleUpdate() {
 	moveFlowers();
