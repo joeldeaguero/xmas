@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<title>Flowers for Dee</title>
+<title>Merry Christmas Pam and Sal/title>
 <script language="JavaScript">
 var idBody;
 var idCanvasFrame;
@@ -124,13 +124,13 @@ var colorStem = "green";
 function drawFlower(x, y, idxFlowerColor) {
 	var scaleFlower = 25;
 	
-	ctxCanvas.strokeStyle = colorStem;
-	ctxCanvas.beginPath();
+	//ctxCanvas.strokeStyle = colorStem;
+	//ctxCanvas.beginPath();
 	ctxCanvas.moveTo(x, y);
-	var stemX = x - scaleFlower / 3;
-	var stemY = y + scaleFlower * 2;
-	ctxCanvas.arcTo(stemX - 15, stemY - 30, stemX + 15, stemY + 30, scaleFlower * 4 / 3);
-	ctxCanvas.stroke();
+	//var stemX = x - scaleFlower / 3;
+	//var stemY = y + scaleFlower * 2;
+	//ctxCanvas.arcTo(stemX - 15, stemY - 30, stemX + 15, stemY + 30, scaleFlower * 4 / 3);
+	//ctxCanvas.stroke();
 	
 	ctxCanvas.strokeStyle = rainbow[idxFlowerColor];
 	var twoPI = Math.PI * 8.0;
