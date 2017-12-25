@@ -150,8 +150,12 @@ function drawSprites() {
 	drawFlowers();
 }
 function addRandomSnowflake() {
-	var width = screen.width;
-	var height = screen.height;
+	var dice = Math.floor(Math.random() * 100) + 1
+	if dice > 1 {
+		return
+	}
+	var width = 1000;
+	var height = 1000;
 	var x = Math.floor(Math.random() * width) + 1
 	var y = Math.floor(Math.random() * height) + 1
 	addFlower(x, y)
