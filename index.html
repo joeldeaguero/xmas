@@ -107,13 +107,13 @@ function addFlower(unsafe_x, unsafe_y) {
 	flower.x = x;
 	flower.y = Clamp(y, 0, heightCanvas - ground[x] - heightFlowerSpawnGap);
 	flower.color = rainbow[idxFlowerColor];
-	flower.scale = 25;
+	flower.scale = 35;
 	flower.spikes = Math.floor(Math.random() * 3) + 3
 	flower.spikeLerps = [];
 	flower.spikeLengths = [];
 	for(var i = 0; i < flower.spikes; i++) {
 		flower.spikeLerps[i] = Math.random();
-		flower.spikeLengths[i] = Math.floor(Math.random() * 20) + 4
+		flower.spikeLengths[i] = Math.floor(Math.random() * 10) + 2
 	}
 	idxFlowerColor = idxFlowerColor + 1;
 	if(idxFlowerColor > rainbow.length) {
@@ -156,11 +156,12 @@ function drawFlower(x, y, idxFlower) {
 			ctxCanvas.lineTo(x3, y3);
 			ctxCanvas.stroke();
 			var x4 = x2 + flowers[idxFlower].spikeLengths[j] * Math.cos(rightAngle);
-			var y4 = x2 + flowers[idxFlower].spikeLengths[j] * Math.sin(rightAngle);
+			var y4 = y2 + flowers[idxFlower].spikeLengths[j] * Math.sin(rightAngle);
 			ctxCanvas.moveTo(x2, y2);
 			ctxCanvas.lineTo(x4, y4);
 			ctxCanvas.stroke();
 		}
+		baseAngle = baseAngle + Math.PI / 3;
 	}
 }
 var colorStem = "green";
