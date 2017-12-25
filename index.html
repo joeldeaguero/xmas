@@ -102,7 +102,15 @@ function addFlower(unsafe_x, unsafe_y) {
 	var flower = [];
 	flower.x = x;
 	flower.y = Clamp(y, 0, heightCanvas - ground[x] - heightFlowerSpawnGap);
-	flower.color = idxFlowerColor;
+	flower.color = rainbow[idxFlowerColor];
+	flower.scale = 25;
+	flower.spikes = Math.floor(Math.random() * 3) + 3
+	flower.spikeLerps = [];
+	flower.spikeLengths = [];
+	for(var i = 0; i < flower.spikes; i++) {
+		flower.spikeLerps[i] = Math.random();
+		flower.spikeLengths[i] = Math.floor(Math.random() * 20) + 4
+	}
 	idxFlowerColor = idxFlowerColor + 1;
 	if(idxFlowerColor > rainbow.length) {
 		idxFlowerColor = 0;
@@ -120,8 +128,39 @@ function moveFlowers() {
 		}
 	}
 }
+function drawFlower(x, y, idxFlower) {
+	ctxCanvas.strokeStyle = flowers[idxFlower].color;
+	ctxCanvas.beginPath();
+	// each side
+	baseAngle = 0;
+	for(var i = 0; i < 6; i++) {
+		var x0 = x;
+		var y0 = y;
+		var x1 = x + flowers[idxFlower].scale * cos(baseAngle);
+		var y1 = y + flowers[idxFlower].scale * sin(baseAngle);
+		ctxCanvas.moveTo(x, y);
+		ctxCanvas.lineTo(x1, y1);
+		ctxCanvas.stroke();
+		for(var j = 0; j < flowers[idx].spikes; j++) {
+			var x2 = lerp(x0, x1, flowers[idx].spikeLerps[j]);
+			var y2 = lerp(y0, y1, flowers[idx].spikeLerps[j]);
+			var leftAngle = baseAngle + Math.PI / 3;
+			var rightAngle = baseAngle - Math.PI / 3;
+			var x3 = x2 + flowers[idx].spikeLengths[j] * cos(leftAngle);
+			var y3 = y2 + flowers[idx].spikeLengths[j] * sin(leftAngle);
+			ctxCanvas.moveTo(x2, y2);
+			ctxCanvas.lineTo(x3, y3);
+			ctxCanvas.stroke();
+			var x4 = x2 + flowers[idx].spikeLengths[j] * cos(rightAngle);
+			var y4 = x2 + flowers[idx].spikeLengths[j] * sin(rightAngle);
+			ctxCanvas.moveTo(x2, y2);
+			ctxCanvas.lineTo(x4, y4);
+			ctxCanvas.stroke();
+		}
+	}
+}
 var colorStem = "green";
-function drawFlower(x, y, idxFlowerColor) {
+function old_drawFlower(x, y, idxFlowerColor) {
 	var scaleFlower = 25;
 	
 	ctxCanvas.strokeStyle = rainbow[idxFlowerColor];
