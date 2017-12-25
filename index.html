@@ -131,6 +131,8 @@ function moveFlowers() {
 	for(var i = 0; i < flowers.length; ++i) {
 		if(flowers[i].y < heightCanvas - ground[flowers[i].x]) {
 			flowers[i].y = flowers[i].y + speedFlowerFall;
+		} else {
+			flowers.Splice(i, 1);
 		}
 	}
 }
@@ -190,7 +192,10 @@ function old_drawFlower(x, y, idxFlowerColor) {
 }
 function drawFlowers() {
 	for(var i = 0; i < flowers.length; ++i) {
-		drawFlower(flowers[i].x, flowers[i].y, i);
+		if(typeof flowers[i] === 'undefined') {
+		} else {
+			drawFlower(flowers[i].x, flowers[i].y, i);
+		}
 	}
 }
 function drawSprites() {
